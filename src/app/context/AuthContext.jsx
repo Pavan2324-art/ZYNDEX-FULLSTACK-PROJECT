@@ -81,20 +81,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = (navigate) => { // Accept navigate as an argument
+  const logout = (navigate) => { 
     setIsLoggingOut(true);
     setTimeout(() => {
+      // 1. Clear State
       setUser(null);
       setRole(null);
+      
+      // 2. Clear Storage
       localStorage.removeItem('zyndex_user');
       localStorage.removeItem('zyndex_role');
       localStorage.removeItem('zyndex_token');
+      
       setIsLoggingOut(false);
       
-      // Use navigate instead of window.location
+      // 3. Navigate Relatively
       if (navigate) {
-       // Change from /Zyndex/ to your actual repo name
-navigate('/ZYNDEX-FULLSTACK-PROJECT/User/Log-In');
+        // Because of 'basename' in router.jsx, this automatically 
+        // points to the correct location in all environments.
+        navigate('/User/Log-In'); 
       }
     }, 2000);
   };
