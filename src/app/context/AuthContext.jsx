@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = (navigate) => { // Accept navigate as an argument
     setIsLoggingOut(true);
     setTimeout(() => {
       setUser(null);
@@ -88,8 +88,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('zyndex_role');
       localStorage.removeItem('zyndex_token');
       setIsLoggingOut(false);
-      window.location.href = '/Zyndex/User/Log-In';
-    }, 2000); // Reduced time for better user experience
+      
+      // Use navigate instead of window.location
+      if (navigate) {
+        navigate('/User/Log-In'); 
+      }
+    }, 2000);
   };
 
   const updateProfile = (updatedData) => {
