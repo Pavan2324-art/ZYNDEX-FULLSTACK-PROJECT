@@ -1,16 +1,16 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom'; // Ensure you use react-router-dom
 import { useAuth } from '../context/AuthContext';
 
 export default function ProtectedRoute({ children, role }) {
-  const { isAuthenticated, isAdmin, isUser, isLoggingOut } = useAuth();
+  const { isAuthenticated, isAdmin, isUser } = useAuth();
 
-  // If we are logging out, don't redirect (avoids the loop)
-  if (isLoggingOut) return null;
-
+  // If not logged in, send them to the Log-In page relative to the basename
   if (!isAuthenticated) {
     return <Navigate to="/User/Log-In" replace />;
   }
 
+  // If they are logged in but have the wrong role, 
+  // you might want to send them to their specific Home instead of Log-In
   if (role === 'admin' && !isAdmin) {
     return <Navigate to="/User/Log-In" replace />;
   }
