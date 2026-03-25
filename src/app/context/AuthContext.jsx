@@ -42,10 +42,8 @@ export const AuthProvider = ({ children }) => {
       // Updated to use NGROK_BASE_URL and skip-browser-warning header
       const response = await axios.post(`${NGROK_BASE_URL}/api/auth/login`, authData, {
         headers: {
-  'ngrok-skip-browser-warning': '69420',
-  'Accept': 'application/json',
-  'Content-Type': 'application/json'
-}
+          'ngrok-skip-browser-warning': '69420'
+        }
       });
 
       const { user, role: rawRole, token } = response.data;
@@ -81,24 +79,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = (navigate) => { 
+  const logout = (navigate) => { // Accept navigate as an argument
     setIsLoggingOut(true);
     setTimeout(() => {
-      // 1. Clear State
       setUser(null);
       setRole(null);
-      
-      // 2. Clear Storage
       localStorage.removeItem('zyndex_user');
       localStorage.removeItem('zyndex_role');
       localStorage.removeItem('zyndex_token');
-      
       setIsLoggingOut(false);
       
-      // 3. Navigate Relatively
+      // Use navigate instead of window.location
       if (navigate) {
-        // Because of 'basename' in router.jsx, this automatically 
-        // points to the correct location in all environments.
         navigate('/User/Log-In'); 
       }
     }, 2000);
