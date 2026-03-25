@@ -1,8 +1,9 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import ProtectedRoute from './components/ProtectedRoute';
 import PageTransitionWrapper from './components/PageTransitionWrapper';
 import ErrorBoundary from './components/ErrorBoundary';
 import RootLayout from './components/RootLayout';
+
 // Route configuration for Zyndex application
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
@@ -38,147 +39,64 @@ export const router = createBrowserRouter([
         index: true,
         element: <Navigate to="/Zyndex/User/Log-In" replace />
       },
-      // User Login/Sign-Up Routes
+      // User Login/Sign-Up Routes (Added leading slashes)
       {
-        path: "Zyndex/User/Log-In",
-        element: <PageTransitionWrapper duration={5000}><Login /></PageTransitionWrapper>
+        path: "/Zyndex/User/Log-In",
+        element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "Zyndex/User/Sign-In",
-        element: <PageTransitionWrapper duration={5000}><Login /></PageTransitionWrapper>
+        path: "/Zyndex/User/Sign-In",
+        element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "Zyndex/User/Sign-Up",
-        element: <PageTransitionWrapper duration={5000}><Login /></PageTransitionWrapper>
+        path: "/Zyndex/User/Sign-Up",
+        element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       // Admin Login/Sign-Up Routes
       {
-        path: "Zyndex/Admin/Log-In",
-        element: <PageTransitionWrapper duration={5000}><Login /></PageTransitionWrapper>
+        path: "/Zyndex/Admin/Log-In",
+        element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "Zyndex/Admin/Sign-Up",
-        element: <PageTransitionWrapper duration={5000}><AdminRequest /></PageTransitionWrapper>
+        path: "/Zyndex/Admin/Sign-Up",
+        element: <PageTransitionWrapper duration={500}><AdminRequest /></PageTransitionWrapper>
       },
       // Forgot Password Route
       {
-        path: "Zyndex/Auth/Forgot-Password",
-        element: <PageTransitionWrapper duration={5000}><ForgotPassword /></PageTransitionWrapper>
+        path: "/Zyndex/Auth/Forgot-Password",
+        element: <PageTransitionWrapper duration={500}><ForgotPassword /></PageTransitionWrapper>
       },
-      // Legacy route for backward compatibility
+      // Legacy routes
       {
-        path: "Zyndex/Log-In",
+        path: "/Zyndex/Log-In",
         element: <Navigate to="/Zyndex/User/Log-In" replace />
       },
       {
-        path: "admin-request",
+        path: "/admin-request",
         element: <Navigate to="/Zyndex/Admin/Sign-Up" replace />
       },
+      // User Profile & Home (Note: make sure to pass :name and :email when navigating)
       {
-        path: "Zyndex/User/authenticator-page",
-        element: <PageTransitionWrapper duration={5000}><UserAuthenticator /></PageTransitionWrapper>
+        path: "/Zyndex/User/:name/:email/Home",
+        element: <ProtectedRoute role="user"><PageTransitionWrapper duration={500}><UserHome /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "Zyndex/Admin/authenticator-page",
-        element: <PageTransitionWrapper duration={5000}><AdminAuthenticator /></PageTransitionWrapper>
+        path: "/Zyndex/User/:name/:email/Profile",
+        element: <ProtectedRoute role="user"><PageTransitionWrapper duration={500}><UserProfile /></PageTransitionWrapper></ProtectedRoute>
+      },
+      // Resource Routes
+      {
+        path: "/Zyndex/Resources/Browse",
+        element: <PageTransitionWrapper duration={500}><Browse /></PageTransitionWrapper>
       },
       {
-        path: "Zyndex/About/About-Us",
-        element: <PageTransitionWrapper duration={5000}><About /></PageTransitionWrapper>
+        path: "/Zyndex/Resources/Categories",
+        element: <PageTransitionWrapper duration={500}><BrowseCategory /></PageTransitionWrapper>
       },
+      // Catch-all route to prevent white screen
       {
-        path: "Zyndex/About/Contact",
-        element: <PageTransitionWrapper duration={5000}><Contact /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Contact/Contact-Us",
-        element: <PageTransitionWrapper duration={5000}><Contact /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Resources/Browse",
-        element: <PageTransitionWrapper duration={5000}><Browse /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Resources/Categories",
-        element: <PageTransitionWrapper duration={5000}><BrowseCategory /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Browse-Category/:category",
-        element: <PageTransitionWrapper duration={5000}><BrowseCategory /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Help-Center",
-        element: <PageTransitionWrapper duration={5000}><HelpCenter /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Support/Help-Center",
-        element: <PageTransitionWrapper duration={5000}><HelpCenter /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/FAQ",
-        element: <PageTransitionWrapper duration={5000}><FAQ /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Support/FAQ",
-        element: <PageTransitionWrapper duration={5000}><FAQ /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Privacy-Policy",
-        element: <PageTransitionWrapper duration={5000}><Privacy /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Legal/Privacy",
-        element: <PageTransitionWrapper duration={5000}><Privacy /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Terms-of-Service",
-        element: <PageTransitionWrapper duration={5000}><Terms /></PageTransitionWrapper>
-      },
-      {
-        path: "Zyndex/Legal/Terms",
-        element: <PageTransitionWrapper duration={5000}><Terms /></PageTransitionWrapper>
-      },
-      // Admin Routes
-      {
-        path: "Zyndex/Admin/:name/:email/Dashboard",
-        element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={5000}><AdminDashboard /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/Admin/:name/:email/Upload-Resource",
-        element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={5000}><UploadResource /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/Admin/:name/:email/Resource-Management",
-        element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={5000}><ResourceManagement /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/Admin/:name/:email/User-Access",
-        element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={5000}><UserAccessManagement /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/Admin/:name/:email/Feedback-Review",
-        element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={5000}><FeedbackReview /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/Admin/:name/:email/Profile",
-        element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={5000}><AdminProfile /></PageTransitionWrapper></ProtectedRoute>
-      },
-      // User Routes
-      {
-        path: "Zyndex/User/:name/:email/Home",
-        element: <ProtectedRoute role="user"><PageTransitionWrapper duration={5000}><UserHome /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/User/:name/:email/Search",
-        element: <ProtectedRoute role="user"><PageTransitionWrapper duration={5000}><SearchResults /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/User/:name/:email/Resource/:id",
-        element: <ProtectedRoute role="user"><PageTransitionWrapper duration={5000}><ResourceDetail /></PageTransitionWrapper></ProtectedRoute>
-      },
-      {
-        path: "Zyndex/User/:name/:email/Profile",
-        element: <ProtectedRoute role="user"><PageTransitionWrapper duration={5000}><UserProfile /></PageTransitionWrapper></ProtectedRoute>
+        path: "*",
+        element: <Navigate to="/" replace />
       }
     ]
   }
