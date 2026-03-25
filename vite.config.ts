@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/Zyndex/', // Add this line to match your routing structure
+  base: '/', // Changed from '/Zyndex/' to '/' for Netlify root deployment
   plugins: [
     react(),
     tailwindcss(),
