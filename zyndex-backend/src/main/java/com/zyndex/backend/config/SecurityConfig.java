@@ -46,10 +46,24 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Explicitly allow your Vite frontend origin
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        
+        // Add ALL origins that are allowed to talk to this backend
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:5173",                             // Local Vite
+            "https://pavan2324-art.github.io",                  // Live GitHub Pages
+            "https://leggy-brentley-lipotropic.ngrok-free.dev"  // The ngrok tunnel
+        ));
+        
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        
+        // CRITICAL: You must allow 'ngrok-skip-browser-warning' here!
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type", 
+            "Accept", 
+            "ngrok-skip-browser-warning"
+        ));
+        
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
 
