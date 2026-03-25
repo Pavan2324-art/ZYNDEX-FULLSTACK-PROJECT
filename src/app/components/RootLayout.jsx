@@ -1,11 +1,12 @@
-import { Outlet } from 'react-router-dom'; // Changed from 'react-router' to 'react-router-dom'
-import { AuthProvider, useAuth } from '../context/AuthContext';
+import { Outlet } from 'react-router-dom'; 
+// Corrected path: Go up one level (..) to 'app', then into 'context'
+import { AuthProvider, useAuth } from '../context/AuthContext'; 
 import { motion, AnimatePresence } from 'framer-motion'; 
 import { BookOpen } from 'lucide-react';
 
 /**
  * LogoutAnimation Component
- * Displays a high-fidelity full-screen transition during the logout process.
+ * High-fidelity full-screen transition for the logout process.
  */
 function LogoutAnimation() {
   return (
@@ -46,10 +47,8 @@ function LogoutAnimation() {
 
       {/* Center Content */}
       <div className="relative text-center space-y-6">
-        {/* Logo Animation */}
         <motion.div className="flex justify-center">
           <div className="relative">
-            {/* Glow Effect */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl blur-2xl"
               animate={{
@@ -62,13 +61,9 @@ function LogoutAnimation() {
                 ease: "easeInOut"
               }}
             />
-            
-            {/* Icon Container */}
             <div className="relative bg-gradient-to-br from-orange-600 to-red-600 p-6 rounded-2xl shadow-2xl">
               <motion.div
-                animate={{
-                  rotate: [0, 360],
-                }}
+                animate={{ rotate: [0, 360] }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
@@ -81,7 +76,6 @@ function LogoutAnimation() {
           </div>
         </motion.div>
 
-        {/* Brand Text */}
         <div className="space-y-2">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
             Zyndex
@@ -89,7 +83,6 @@ function LogoutAnimation() {
           <p className="text-slate-600 font-medium text-sm">Logging out...</p>
         </div>
 
-        {/* Progress Bar */}
         <div className="w-56 mx-auto">
           <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
             <motion.div
@@ -97,7 +90,7 @@ function LogoutAnimation() {
               initial={{ width: '0%' }}
               animate={{ width: '100%' }}
               transition={{
-                duration: 2, // Shortened for better UX during testing
+                duration: 2,
                 ease: "easeInOut"
               }}
             />
@@ -108,10 +101,6 @@ function LogoutAnimation() {
   );
 }
 
-/**
- * LayoutContent Component
- * Handles the conditional rendering of the logout animation and page routes.
- */
 function LayoutContent() {
   const { isLoggingOut } = useAuth();
 
@@ -120,20 +109,11 @@ function LayoutContent() {
       <AnimatePresence mode="wait">
         {isLoggingOut && <LogoutAnimation key="logout" />}
       </AnimatePresence>
-      
-      {/* CRITICAL: The Outlet component acts as a placeholder. 
-          It tells React Router where to render the children routes 
-          defined in routes.jsx (like Login or UserHome).
-      */}
       <Outlet />
     </>
   );
 }
 
-/**
- * RootLayout Component
- * The top-level wrapper for the application providing Auth context.
- */
 export default function RootLayout() {
   return (
     <AuthProvider>
