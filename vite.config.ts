@@ -8,7 +8,7 @@ const isGithubPages = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
   // Use the repo name for GitHub, but '/' for Netlify/Local
-  base: isGithubPages ? '/ZYNDEX-FULLSTACK-PROJECT/' : '/', 
+  base:'/ZYNDEX-FULLSTACK-PROJECT/', 
   plugins: [
     react(),
     tailwindcss(),
