@@ -3,8 +3,12 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
+// This checks if you are deploying to GitHub Pages
+const isGithubPages = process.env.NODE_ENV === 'production';
+
 export default defineConfig({
-  base: '/', // Changed from '/Zyndex/' to '/' for Netlify root deployment
+  // Use the repo name for GitHub, but '/' for Netlify/Local
+  base: isGithubPages ? '/ZYNDEX-FULLSTACK-PROJECT/' : '/', 
   plugins: [
     react(),
     tailwindcss(),
