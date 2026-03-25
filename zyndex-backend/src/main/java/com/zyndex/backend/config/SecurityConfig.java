@@ -49,10 +49,10 @@ public class SecurityConfig {
         
         // Add ALL origins that are allowed to talk to this backend
         configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost:5173",                             // Local Vite
-            "https://pavan2324-art.github.io",                  // Live GitHub Pages
-            "https://leggy-brentley-lipotropic.ngrok-free.dev"  // The ngrok tunnel
-        ));
+        	    "http://localhost:5173",
+        	    "https://pavan2324-art.github.io",
+        	    "https://pavan2324-art.github.io/ZYNDEX-FULLSTACK-PROJECT" // Add this specific path
+        	));
         
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         

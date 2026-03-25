@@ -42,8 +42,10 @@ export const AuthProvider = ({ children }) => {
       // Updated to use NGROK_BASE_URL and skip-browser-warning header
       const response = await axios.post(`${NGROK_BASE_URL}/api/auth/login`, authData, {
         headers: {
-          'ngrok-skip-browser-warning': '69420'
-        }
+  'ngrok-skip-browser-warning': '69420',
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+}
       });
 
       const { user, role: rawRole, token } = response.data;
@@ -91,7 +93,8 @@ export const AuthProvider = ({ children }) => {
       
       // Use navigate instead of window.location
       if (navigate) {
-        navigate('/User/Log-In'); 
+       // Change from /Zyndex/ to your actual repo name
+navigate('/ZYNDEX-FULLSTACK-PROJECT/User/Log-In');
       }
     }, 2000);
   };

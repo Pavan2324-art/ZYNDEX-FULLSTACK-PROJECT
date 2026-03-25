@@ -35,6 +35,9 @@ import SearchResults from './pages/user/SearchResults';
 import ResourceDetail from './pages/user/ResourceDetail';
 import UserProfile from './pages/user/UserProfile';
 
+// Handle Environment-Based Pathing
+const basename = import.meta.env.MODE === 'production' ? '/ZYNDEX-FULLSTACK-PROJECT' : '';
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -43,152 +46,152 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/Zyndex/User/Log-In" replace />
+        element: <Navigate to="/User/Log-In" replace />
       },
       // --- AUTHENTICATION ROUTES ---
       {
-        path: "/Zyndex/User/Log-In",
+        path: "User/Log-In",
         element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/User/Sign-In",
+        path: "User/Sign-In",
         element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/User/Sign-Up",
+        path: "User/Sign-Up",
         element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Admin/Log-In",
+        path: "Admin/Log-In",
         element: <PageTransitionWrapper duration={500}><Login /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Admin/Sign-Up",
+        path: "Admin/Sign-Up",
         element: <PageTransitionWrapper duration={500}><AdminRequest /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Auth/Forgot-Password",
+        path: "Auth/Forgot-Password",
         element: <PageTransitionWrapper duration={500}><ForgotPassword /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/User/authenticator-page",
+        path: "User/authenticator-page",
         element: <PageTransitionWrapper duration={500}><UserAuthenticator /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Admin/authenticator-page",
+        path: "Admin/authenticator-page",
         element: <PageTransitionWrapper duration={500}><AdminAuthenticator /></PageTransitionWrapper>
       },
 
       // --- GENERAL / INFO ROUTES ---
       {
-        path: "/Zyndex/About/About-Us",
+        path: "About/About-Us",
         element: <PageTransitionWrapper duration={500}><About /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/About/Contact",
+        path: "About/Contact",
         element: <PageTransitionWrapper duration={500}><Contact /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Contact/Contact-Us",
+        path: "Contact/Contact-Us",
         element: <PageTransitionWrapper duration={500}><Contact /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Resources/Browse",
+        path: "Resources/Browse",
         element: <PageTransitionWrapper duration={500}><Browse /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Resources/Categories",
+        path: "Resources/Categories",
         element: <PageTransitionWrapper duration={500}><BrowseCategory /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Browse-Category/:category",
+        path: "Browse-Category/:category",
         element: <PageTransitionWrapper duration={500}><BrowseCategory /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Help-Center",
+        path: "Help-Center",
         element: <PageTransitionWrapper duration={500}><HelpCenter /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Support/Help-Center",
+        path: "Support/Help-Center",
         element: <PageTransitionWrapper duration={500}><HelpCenter /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/FAQ",
+        path: "FAQ",
         element: <PageTransitionWrapper duration={500}><FAQ /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Support/FAQ",
+        path: "Support/FAQ",
         element: <PageTransitionWrapper duration={500}><FAQ /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Privacy-Policy",
+        path: "Privacy-Policy",
         element: <PageTransitionWrapper duration={500}><Privacy /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Legal/Privacy",
+        path: "Legal/Privacy",
         element: <PageTransitionWrapper duration={500}><Privacy /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Terms-of-Service",
+        path: "Terms-of-Service",
         element: <PageTransitionWrapper duration={500}><Terms /></PageTransitionWrapper>
       },
       {
-        path: "/Zyndex/Legal/Terms",
+        path: "Legal/Terms",
         element: <PageTransitionWrapper duration={500}><Terms /></PageTransitionWrapper>
       },
 
       // --- PROTECTED ADMIN ROUTES ---
       {
-        path: "/Zyndex/Admin/:name/:email/Dashboard",
+        path: "Admin/:name/:email/Dashboard",
         element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={500}><AdminDashboard /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/Admin/:name/:email/Upload-Resource",
+        path: "Admin/:name/:email/Upload-Resource",
         element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={500}><UploadResource /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/Admin/:name/:email/Resource-Management",
+        path: "Admin/:name/:email/Resource-Management",
         element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={500}><ResourceManagement /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/Admin/:name/:email/User-Access",
+        path: "Admin/:name/:email/User-Access",
         element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={500}><UserAccessManagement /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/Admin/:name/:email/Feedback-Review",
+        path: "Admin/:name/:email/Feedback-Review",
         element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={500}><FeedbackReview /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/Admin/:name/:email/Profile",
+        path: "Admin/:name/:email/Profile",
         element: <ProtectedRoute role="admin"><PageTransitionWrapper duration={500}><AdminProfile /></PageTransitionWrapper></ProtectedRoute>
       },
 
       // --- PROTECTED USER ROUTES ---
       {
-        path: "/Zyndex/User/:name/:email/Home",
+        path: "User/:name/:email/Home",
         element: <ProtectedRoute role="user"><PageTransitionWrapper duration={500}><UserHome /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/User/:name/:email/Search",
+        path: "User/:name/:email/Search",
         element: <ProtectedRoute role="user"><PageTransitionWrapper duration={500}><SearchResults /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/User/:name/:email/Resource/:id",
+        path: "User/:name/:email/Resource/:id",
         element: <ProtectedRoute role="user"><PageTransitionWrapper duration={500}><ResourceDetail /></PageTransitionWrapper></ProtectedRoute>
       },
       {
-        path: "/Zyndex/User/:name/:email/Profile",
+        path: "User/:name/:email/Profile",
         element: <ProtectedRoute role="user"><PageTransitionWrapper duration={500}><UserProfile /></PageTransitionWrapper></ProtectedRoute>
       },
 
-      // --- LEGACY / REDIRECTS ---
+      // --- REDIRECTS ---
       {
-        path: "/Zyndex/Log-In",
-        element: <Navigate to="/Zyndex/User/Log-In" replace />
+        path: "Log-In",
+        element: <Navigate to="/User/Log-In" replace />
       },
       {
-        path: "/admin-request",
-        element: <Navigate to="/Zyndex/Admin/Sign-Up" replace />
+        path: "admin-request",
+        element: <Navigate to="/Admin/Sign-Up" replace />
       },
       {
         path: "*",
@@ -196,4 +199,4 @@ export const router = createBrowserRouter([
       }
     ]
   }
-]);
+], { basename });
