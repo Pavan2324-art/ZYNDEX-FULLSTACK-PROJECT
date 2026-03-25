@@ -60,24 +60,24 @@ const handleSubmit = async (e) => {
 
   try {
     if (isLogin) {
+      // 1. Let AuthContext handle the storage and state cleaning
       const res = await login(authData); 
-      console.log("Backend Response Data:", res);
-
+      
+      // 2. Extract data from the 'user' object returned by your backend
       const userData = res.user || res; 
       const resName = userData.name || "User";
       const resEmail = userData.email || email;
-      const resRole = userData.role || activeTab;
+      
+      // We use the cleaned role from state or the response
+      const resRole = res.role || activeTab;
 
-      // Format strings for the URL (replaces spaces with hyphens)
       const safeName = encodeURIComponent(resName.replace(/\s+/g, '-'));
       const safeEmail = encodeURIComponent(resEmail);
 
-      // 4. Navigate to match routes.jsx EXACTLY
+      // 3. Navigate based on role
       if (resRole.toString().toUpperCase().includes('ADMIN')) {
-        // Admins go to /Dashboard according to your routes
         navigate(`/Zyndex/Admin/${safeName}/${safeEmail}/Dashboard`);
       } else {
-        // Users go to /Home according to your routes
         navigate(`/Zyndex/User/${safeName}/${safeEmail}/Home`);
       }
       
@@ -87,9 +87,7 @@ const handleSubmit = async (e) => {
       setIsLogin(true);
     }
   } catch (error) {
-    // This logs the ACTUAL reason it's failing (likely a TypeError)
-    console.error("Code Crash Detail:", error);
-    
+    console.error("Login Error:", error);
     const message = error.response?.data?.message || "Authentication failed. Check console for details.";
     alert(message);
   }
@@ -383,7 +381,7 @@ const handleSubmit = async (e) => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Enter your email"
-                          pattern="[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}"
+                          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                           title="Email must contain @ and a domain (e.g., .com, .org)"
                           className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-orange-600 focus:ring-4 focus:ring-orange-600/10 outline-none transition-all depth-3d-input"
                           required

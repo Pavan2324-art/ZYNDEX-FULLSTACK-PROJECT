@@ -38,7 +38,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (authData) => {
   try {
     const response = await axios.post("http://localhost:8080/api/auth/login", authData);
-    const { name, email, role: rawRole, token } = response.data;
+    // Pull token and role from the top level, then destructure name/email from the 'user' object
+const { user, role: rawRole, token } = response.data;
+const { name, email } = user;
 
     // 1. Safe Token Storage
     localStorage.setItem('zyndex_token', token);
