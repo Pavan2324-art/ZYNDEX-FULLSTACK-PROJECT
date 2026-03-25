@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://fascinating-dusk-4a35ac.netlify.app")
+@CrossOrigin(origins = {
+    "https://pavan2324-art.github.io",
+    "https://leggy-brentley-lipotropic.ngrok-free.dev"
+})
 public class AuthController {
 
     private final AuthService authService;
-    
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {

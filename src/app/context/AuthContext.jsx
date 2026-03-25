@@ -2,10 +2,13 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { TransitionLoader } from '@/app/components/PageTransitionWrapper';
 import axios from 'axios';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Initialize from localStorage if available
+  // Your "Golden Link" from the ngrok terminal
+  const NGROK_BASE_URL = "https://leggy-brentley-lipotropic.ngrok-free.dev";
+
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('zyndex_user');
     return savedUser ? JSON.parse(savedUser) : null;
@@ -18,7 +21,6 @@ export const AuthProvider = ({ children }) => {
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Persist to localStorage whenever user or role changes
   useEffect(() => {
     if (user) {
       localStorage.setItem('zyndex_user', JSON.stringify(user));
@@ -36,70 +38,68 @@ export const AuthProvider = ({ children }) => {
   }, [role]);
 
   const login = async (authData) => {
-  try {
-    const response = await axios.post("http://localhost:8080/api/auth/login", authData);
-    // Pull token and role from the top level, then destructure name/email from the 'user' object
-const { user, role: rawRole, token } = response.data;
-const { name, email } = user;
+    try {
+      // Updated to use NGROK_BASE_URL and skip-browser-warning header
+      const response = await axios.post(`${NGROK_BASE_URL}/api/auth/login`, authData, {
+        headers: {
+          'ngrok-skip-browser-warning': '69420'
+        }
+      });
 
-    // 1. Safe Token Storage
-    localStorage.setItem('zyndex_token', token);
+      const { user, role: rawRole, token } = response.data;
+      const { name, email } = user;
 
-    // 2. Resilient Role Cleaning (Prevents crashes if role is null/different)
-    const cleanRole = (rawRole || 'USER').toString().replace('ROLE_', '').toLowerCase();
-    
-    // 3. Update States
-    setUser({ name, email });
-    setRole(cleanRole);
+      localStorage.setItem('zyndex_token', token);
 
-    // 4. Verification Logging
-    console.log("State updated for:", name);
-    
-    return response.data;
-  } catch (error) {
-    console.error("Context Login Error:", error);
-    throw error; // This triggers the 'Oops' page in your Login component
-  }
-};
+      const cleanRole = (rawRole || 'USER').toString().replace('ROLE_', '').toLowerCase();
+      
+      setUser({ name, email });
+      setRole(cleanRole);
 
-  const logout = () => {
-  setIsLoggingOut(true);
-  setTimeout(() => {
-    setUser(null);
-    setRole(null);
-    localStorage.removeItem('zyndex_user');
-    localStorage.removeItem('zyndex_role');
-    localStorage.removeItem('zyndex_token'); // Don't forget this!
-    setIsLoggingOut(false);
-    window.location.href = '/Zyndex/User/Log-In';
-  }, 10000);
-};
+      console.log("State updated for:", name);
+      return response.data;
+    } catch (error) {
+      console.error("Context Login Error:", error);
+      throw error;
+    }
+  };
 
   const register = async (regData) => {
-  try {
-    const response = await axios.post("http://localhost:8080/api/auth/register", regData);
-    return response.data;
-  } catch (error) {
-    console.error("Registration API Error:", error);
-    throw error;
-  }
-};
+    try {
+      // Updated to use NGROK_BASE_URL and skip-browser-warning header
+      const response = await axios.post(`${NGROK_BASE_URL}/api/auth/register`, regData, {
+        headers: {
+          'ngrok-skip-browser-warning': '69420'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Registration API Error:", error);
+      throw error;
+    }
+  };
+
+  const logout = () => {
+    setIsLoggingOut(true);
+    setTimeout(() => {
+      setUser(null);
+      setRole(null);
+      localStorage.removeItem('zyndex_user');
+      localStorage.removeItem('zyndex_role');
+      localStorage.removeItem('zyndex_token');
+      setIsLoggingOut(false);
+      window.location.href = '/Zyndex/User/Log-In';
+    }, 2000); // Reduced time for better user experience
+  };
 
   const updateProfile = (updatedData) => {
-    // Update user profile data
     const updatedUser = { ...user, ...updatedData };
     setUser(updatedUser);
     return updatedUser;
   };
 
-  // Helper function to generate URL-safe strings
-  const getUrlSafeName = () => {
-    return user?.name ? encodeURIComponent(user.name.replace(/\s+/g, '-')) : 'user';
-  };
-
-  const getUrlSafeEmail = () => {
-    return user?.email ? encodeURIComponent(user.email) : 'email';
-  };
+  const getUrlSafeName = () => user?.name ? encodeURIComponent(user.name.replace(/\s+/g, '-')) : 'user';
+  const getUrlSafeEmail = () => user?.email ? encodeURIComponent(user.email) : 'email';
 
   const value = {
     user,
@@ -122,7 +122,7 @@ const { name, email } = user;
       <AnimatePresence>
         {isLoggingOut && (
           <TransitionLoader 
-            duration={2000} // Changed from 10000 for better DX
+            duration={2000} 
             message={`Logging out ${user?.name || 'user'}...`} 
           />
         )}
@@ -130,6 +130,7 @@ const { name, email } = user;
     </AuthContext.Provider>
   );
 };
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within an AuthProvider');
